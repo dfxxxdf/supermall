@@ -15,6 +15,11 @@
  */
 /**
  * 之前我们封装了手机底部导航的功能（tabbar.zip），封装的目的就是这个功能可以拿过来在很项目中方使用，那么我们怎么拿过来这里直接使用呢，我们必须要有这种封装抽取的思想
- * 1、把封装tabbar项目中的E:\phpstudy_pro\WWW\Vuejs\webpack\tabbar\src\components\tabbar文件夹复制到这个项目中的E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\components\common文件夹中
+ * 1、把封装tabbar项目中的E:\phpstudy_pro\WWW\Vuejs\webpack\tabbar\src\components\tabbar文件夹复制到这个项目中的E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\components\common文件夹中（这是很多项目都可以使用的公共文件）
+ * 2、把封装tabbar项目中的E:\phpstudy_pro\WWW\Vuejs\webpack\tabbar\src\components\mainTabbar文件夹复制到这个项目中的E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\components\content文件夹中（只有这个项目才可以使用这里的功能）
+ * 3、在E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\App.vue文件中导入MainTabBar，并写入Vue的占位符<router-view/>和<main-tab-bar/>
+ * 4、这里我们还要使和到vue-router(路由)，所以这里我们要安装一下路由：npm install vue-router --save，然后在生成的E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\router\index.js文件中写入代码
+ * 5、在E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\main.js进行router的导入和挂载
+ *
  */
 const name = '刀飞'
