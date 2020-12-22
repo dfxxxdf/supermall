@@ -20,6 +20,15 @@
  * 3、在E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\App.vue文件中导入MainTabBar，并写入Vue的占位符<router-view/>和<main-tab-bar/>
  * 4、这里我们还要使和到vue-router(路由)，所以这里我们要安装一下路由：npm install vue-router --save，然后在生成的E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\router\index.js文件中写入代码
  * 5、在E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\main.js进行router的导入和挂载
- *
+ */
+/**
+ * 更换浏览器标题上显示的图标的方法
+ * 1、把D:\phpstudy_pro\WWW\Vuejs\webpack\supermall\public\favicon.ico图标换掉就可以了
+ */
+/**
+ * 移动App每一页页头上的导航我们要怎么进行封装
+ * 1、分析：类似于App每一页页头上的导航应该是很多项目都会用得到的，所以我们创建到D:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\components\common文件夹中，但是不同项目中的内容有所不同，所以这里我们要使用到插槽
+ * 2、创建D:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\components\common\nvabar\NavBar.vue文件并写入相关代码
+ * 3、在首页D:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\views\home\home.vue中导入、注册NavBar并使用
  */
 const name = '刀飞'

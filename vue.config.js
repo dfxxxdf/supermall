@@ -1,4 +1,3 @@
-
 module.exports = {
   //准备配置webpack的config
   configureWebpack: {
