@@ -4,11 +4,12 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 //这里进行vue-router的懒加载
 const Home = ()=>import('../views/home/home')
-const Category = ()=>import('../views/category/Category')
+const Category = ()=>import('../views/category/category')
 const Cart = ()=>import('../views/cart/cart')
-const Profile = ()=>import('../views/profile/Profile')
+const Profile = ()=>import('../views/profile/profile')
 //安装插件
-Vue.user(VueRouter)
+// Vue.user(VueRouter)
+Vue.use(VueRouter)
 //创建路由对象
 const routes = [
   // 这里是一进入页面默认显示的主页
@@ -33,9 +34,6 @@ const routes = [
     component: Profile
   },
 ]
-
-
-
 const router = new VueRouter({
   routes,
   mode: 'history',
