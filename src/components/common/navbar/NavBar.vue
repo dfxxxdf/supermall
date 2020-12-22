@@ -17,14 +17,17 @@
 <style scoped>
   .nav-bar {
     display: flex;
+    height: 44px;
     line-height: 44px; /*一般导航都是44或是64，可以直接撑起高度*/
+    text-align: center;
+    box-shadow: 0 1px 1px rgba(100,100,100,.1);/*底部设置阴影线*/
   }
   .left, .right{
     width: 60px;
-    background-color: blue;
+    /*background-color: blue;*/
   }
   .center{
     flex: 1; /*左边给了60、右边给了60，那么剩下的中间就会全部占用撑满*/
-    background-color: red;
+    /*background-color: red;*/
   }
 </style>
