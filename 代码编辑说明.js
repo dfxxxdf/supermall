@@ -1,4 +1,9 @@
 /**
+ * 在我们创建项目的时候，需要一个默认的normalize.css和base.css文件导入，那么这个文件哪里来呢，要怎么导入。
+ * 1、去github里下载necolas/normalize.css文件并导入到目录E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\assets\css中,并在E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\assets\css\base.css文件中引用
+ * 2、base.css文件是我照着老师的代码敲出来的，把这个文件放到E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\assets\css目录下就可以了
+ */
+/**
  * 这里我们创建的是脚手架3，那么在脚手架3里我们怎么配置路径别名呢？
  * 1、创建E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\vue.config.js文件并写入代码
  * 2、在E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\App.vue文件中使用别名的路径导入：@import "assets/css/base.css"
@@ -31,4 +36,25 @@
  * 2、创建D:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\components\common\navbar\NavBar.vue文件并写入相关代码
  * 3、在首页D:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\views\home\home.vue中导入、注册NavBar并使用
  */
+/**
+ * 下面我们要完成轮播图的功能，要怎么来实现呢
+ * 1、在做轮播图之前，我们的习惯是先把服务器的数据拿到，拿到数据之后再根据数据去展示会比较好一点。但有很多时候不是按照我们习惯的，很多公司我们在做前端的时候服务器还没开发完成，这
+ * 种情况是没有办法的，我们只能按照一些模拟的数据先把轮播做出来
+ * 2、即然要拿数据，那么我们就要进行网络模块的封装，创建E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\network\request.js文件进行网络模块的封装(这就是封装的整体的一个网络框架)。
+ * 3、用命令进入E:\phpstudy_pro\WWW\Vuejs\webpack\supermall使用命令：npm install axios --save进行axios的安装
+ * 4、封装完成之后正常情况下我们可以在E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\views\home\home.vue中进行网络请求，但是这里我们不这样做，我们直接
+ * 创建E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\network\home.js进行再一次的网络封装并写入相关代码
+ * 5、在E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\views\home\home.vue文件中导入home.js文件并写入相应代码
+ * 6、创建E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\components\common\swiper\Swiper.vue文件并写入代码（这个文件是老师那里copy来的一模一样）
+ * 7、创建E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\components\common\swiper\index.js文件并写入代码（这个文件是老师那里copy来的一模一样）
+ * 8、创建E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\components\common\swiper\SwiperItem.vue文件并写入代码（这个文件是老师那里copy来的一模一样）
+ * 9、在E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\views\home\home.vue文件中导入Swiper.vue和SwiperItem.vue并使用
+ * 10、在E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\views\home\home.vue文件中我们把轮播组件Swiper抽取到D:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\views\home\childComps\HomeSwiper.vue中并写入相关代码
+ * 11、在D:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\views\home\home.vue文件中导入HomeSwiper.vue并使用
+ */
+/**
+ * 下面我们来完成推荐组件的功能开发
+ * 1、创建E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\views\home\childComps\RecommendView.vue文件并写入以下代码
+ */
+
 const name = '刀飞'
