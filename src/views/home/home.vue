@@ -3,26 +3,33 @@
 <!--    这里因为我们要为插槽插入东西，所以这里使用双标签-->
 <!--    在插槽里插入内容-->
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
+<!--    在这里使用HomeSwiper.vue,把得到服务器里的数据banners传进来-->
     <home-swiper :banners="banners"/>
+<!--    在这里使用RecommendView.vue,把得到服务器里的数据recommends传进来-->
+    <recommend-view :recommends = "recommends"/>
   </div>
 </template>
 
 <script>
   import NavBar from 'components/common/navbar/NavBar'
   //这里导入E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\network\home.js文件中的方法来对接数据
-  import {getHomeMultidata} from 'network/home'
+
   import HomeSwiper from './childComps/HomeSwiper'
+  import RecommendView from './childComps/RecommendView'
+
+  import {getHomeMultidata} from 'network/home'
   export default {
     name: "home",
     components: {
       NavBar,
-      HomeSwiper
+      HomeSwiper,
+      RecommendView
     },
     data(){
       return {
         //给一个默认值为null
         // result: null
-        //res的数据被保存到这里就不会被回收了
+        // res的数据被保存到这里就不会被回收了
         banners: [],
         recommends: []
       }

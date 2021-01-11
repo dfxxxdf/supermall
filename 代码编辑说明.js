@@ -55,6 +55,8 @@
 /**
  * 下面我们来完成推荐组件的功能开发
  * 1、创建E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\views\home\childComps\RecommendView.vue文件并写入以下代码
+ * 2、在E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\views\home\home.vue文件中导入RecommendView.vue并使用
+ * 3、在E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\views\home\childComps\RecommendView.vue文件中写一下样式
  */
 
 const name = '刀飞'
