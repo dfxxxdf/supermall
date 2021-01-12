@@ -1,8 +1,8 @@
 <template>
   <!--这里使用id选择器，这里使用类选择器-->
   <div id = "tab-bar">
-  <!--这里使用了一个插槽,所插入的内容为App.vue里面<tab-bar>里面的内容-->
-  <slot></slot>
+    <!--这里使用了一个插槽,所插入的内容为TabBar里面的4个按钮的全部-->
+    <slot></slot>
   </div>
 </template>
 <script>
