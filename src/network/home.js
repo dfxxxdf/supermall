@@ -8,3 +8,13 @@ export function getHomeMultidata(){
     url: '/home/multidata' //拼接上request里面的config参数的地址
   })
 }
+
+export function getHomeGoods(type,page){
+  return request({
+    url: '/home/data',
+    params: {
+      type,
+      page
+    }
+  })
+}

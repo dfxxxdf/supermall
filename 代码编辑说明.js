@@ -58,5 +58,14 @@
  * 2、在E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\views\home\home.vue文件中导入RecommendView.vue并使用
  * 3、在E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\views\home\childComps\RecommendView.vue文件中写一下样式
  */
-
+/**
+ * 本周流行推举功能的开发(其实就放进去了一张图片)
+ * 1、创建E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\views\home\childComps\FeatureView.vue组件并写入相关代码
+ * 2、在E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\views\home\home.vue页面中导入FeatureView.vue组件并使用，还要记得写一下样式代码就可以了
+ */
+/**
+ * Home页面我们上下滑动的时候会发现项端粉红色的导航会跟着上下滑动，怎么处理这个问题呢？
+ * 1、在E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\views\home\home.vue页面中的样式中的.home-nav中写入相关代码
+ * 2、
+ */
 const name = '刀飞'
