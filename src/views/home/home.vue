@@ -9,6 +9,8 @@
     <recommend-view :recommends = "recommends"/>
     <feature-view/>
     <tab-control class="tab-control" :titles="['流行', '新款', '精选']"/>
+<!--    这里得到的数据是从E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\components\content\goods\GoodsList.vue中的props:里获取的-->
+    <good-list :goods="goods['pop'].list"/>
     <ul>
       <li>1</li>
       <li>1</li>
@@ -122,6 +124,7 @@
 
   import NavBar from 'components/common/navbar/NavBar'
   import TabControl from 'components/content/tabControl/TabControl'
+  import GoodList from 'components/content/goods/GoodsList'
 
   import { getHomeMultidata, getHomeGoods } from 'network/home'
   export default {
@@ -132,7 +135,8 @@
       FeatureView,
 
       NavBar,
-      TabControl
+      TabControl,
+      GoodList
     },
     data(){
       return {
@@ -142,9 +146,9 @@
         banners: [],
         recommends: [],
         goods: {
-          'pop': {page: 0, list: []}, //流行
-          'news': {page: 0,list: []}, //新款
-          'sell': {page: 0, list:[]} //精选
+          'pop': {page: 0, list: []}, //流行款数据
+          'new': {page: 0,list: []}, //新款数据
+          'sell': {page: 0, list:[]} //精选款数据
         }
       }
     },
@@ -154,9 +158,8 @@
       this.getHomeMultidata()
       //2、请求商品数据
       this.getHomeGoods('pop')
-      // this.getHomeGoods('new')
-      // this.getHomeGoods('sell')
-
+      this.getHomeGoods('new')
+      this.getHomeGoods('sell')
     },
     methods: {
       getHomeMultidata(){
@@ -176,9 +179,22 @@
         })
       },
       getHomeGoods(type){
-        //请求商品数据
-        getHomeGoods(type, 1).then((res)=>{
-          console.log(res);
+        /**
+         * 请求商品数据
+         * 比如我第一次请求新款数据的时候，页码肯定是1，但是如果我往下拖以后就不是第1页数据了，可能是其它页，所以如果我们要复用getHomeGoods()方法，页码永远是第1页是不合理的
+         * 所以这里的页码我们只能动态获取，也就是在原来的页码上请求下一页的数据
+         */
+        const  page = this.goods[type].page + 1;
+        getHomeGoods(type, page).then((res)=>{
+          /**
+           * 这里获取的是'流行'的前30条数据，也就是第1页
+           * 但是这里我们拿到的res是个局部变量，用完是会被销毁的，那么我们怎么把res进行保存呢
+           * 所以要把res.data.list数据拿出来塞到'pop': {page: 0, list: []}里面去
+           */
+          // console.log(res);
+          this.goods[type].list.push(...res.data.list) //这句代码就是把res数据塞到'pop': {page: 0, list: []}里面去
+          // 现在pop类型已经多了一组数据了，所以这里的页码要加个1
+          this.goods[type].page += 1
         });
       }
     }
