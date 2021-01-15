@@ -8,9 +8,10 @@
 <!--    在这里使用RecommendView.vue,把得到服务器里的数据recommends传进来-->
     <recommend-view :recommends = "recommends"/>
     <feature-view/>
-    <tab-control class="tab-control" :titles="['流行', '新款', '精选']"/>
+<!--    这里的的@tabClick是从E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\components\content\tabControl\TabControl.vue文件中的methods:里的this.$emit('tabClick', index)传过来的-->
+    <tab-control class="tab-control" :titles="['流行', '新款', '精选']" @tabClick="tabClick"/>
 <!--    这里得到的数据是从E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\components\content\goods\GoodsList.vue中的props:里获取的-->
-    <good-list :goods="goods['pop'].list"/>
+    <good-list :goods="goods[currentType].list"/>
     <ul>
       <li>1</li>
       <li>1</li>
@@ -149,7 +150,8 @@
           'pop': {page: 0, list: []}, //流行款数据
           'new': {page: 0,list: []}, //新款数据
           'sell': {page: 0, list:[]} //精选款数据
-        }
+        },
+        currentType: 'pop'
       }
     },
     //组件创建完成以后马上就要发生网络请求，所以这里要用到生命周期created()
@@ -162,6 +164,28 @@
       this.getHomeGoods('sell')
     },
     methods: {
+      /**
+       * 事件监听的相关方法
+       */
+      tabClick(index){
+        // console.log(index);
+        switch (index) {
+          case 0:
+            this.currentType = 'pop'
+            break
+          case 1:
+            this.currentType = 'new'
+            break
+          case 2:
+            this.currentType = 'sell'
+            break
+        }
+      },
+
+
+      /**
+       * 以下是网络请求的方法
+       */
       getHomeMultidata(){
         //1、请求多个数据,getHomeMultidata()方法返回的是Promist
         //这其实就是传说中的异步操作
@@ -210,10 +234,11 @@
     position: fixed;
     left: 0; right: 0;
     top: 0;
-    z-index: 9;
+    z-index: 9;/*如果没有这句代码，.home-nav(购物街的代码不会在最上层)*/
   }
   .tab-control{
     position: sticky;
     top:44px;
+    z-index: 9;/*如果没有这句代码.tab-control不会在最上层。会被其它组件遮住到后面看不见。*/
   }
 </style>

@@ -25,6 +25,8 @@
     methods: {
       itemClick(index){
         this.currentIndex = index;
+        // 子组件发生了点击，要把事件传到外面去
+        this.$emit('tabClick', index) //index是告诉我点击的是哪个选项卡
       }
     }
   }
