@@ -1,17 +1,21 @@
 <template>
-  <div id="home">
+  <div id="home" class="wrapper">
 <!--    这里因为我们要为插槽插入东西，所以这里使用双标签-->
 <!--    在插槽里插入内容-->
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-<!--    在这里使用HomeSwiper.vue,把得到服务器里的数据banners传进来-->
-    <home-swiper :banners="banners"/>
-<!--    在这里使用RecommendView.vue,把得到服务器里的数据recommends传进来-->
-    <recommend-view :recommends = "recommends"/>
-    <feature-view/>
-<!--    这里的的@tabClick是从E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\components\content\tabControl\TabControl.vue文件中的methods:里的this.$emit('tabClick', index)传过来的-->
-    <tab-control class="tab-control" :titles="['流行', '新款', '精选']" @tabClick="tabClick"/>
-<!--    这里得到的数据是从E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\components\content\goods\GoodsList.vue中的props:里获取的-->
-    <good-list :goods="showGoods"/>
+
+    <scroll class="content">
+      <!--    在这里使用HomeSwiper.vue,把得到服务器里的数据banners传进来-->
+      <home-swiper :banners="banners"/>
+      <!--    在这里使用RecommendView.vue,把得到服务器里的数据recommends传进来-->
+      <recommend-view :recommends = "recommends"/>
+      <feature-view/>
+      <!--    这里的的@tabClick是从E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\components\content\tabControl\TabControl.vue文件中的methods:里的this.$emit('tabClick', index)传过来的-->
+      <tab-control class="tab-control" :titles="['流行', '新款', '精选']" @tabClick="tabClick"/>
+      <!--    这里得到的数据是从E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\components\content\goods\GoodsList.vue中的props:里获取的-->
+      <good-list :goods="showGoods"/>
+    </scroll>
+
     <ul>
       <li>1</li>
       <li>1</li>
@@ -126,6 +130,7 @@
   import NavBar from 'components/common/navbar/NavBar'
   import TabControl from 'components/content/tabControl/TabControl'
   import GoodList from 'components/content/goods/GoodsList'
+  import Scroll from 'components/common/scroll/Scroll'
 
   import { getHomeMultidata, getHomeGoods } from 'network/home'
   export default {
@@ -137,7 +142,8 @@
 
       NavBar,
       TabControl,
-      GoodList
+      GoodList,
+      Scroll
     },
     data(){
       return {
@@ -246,5 +252,9 @@
     position: sticky;
     top:44px;
     z-index: 9;/*如果没有这句代码.tab-control不会在最上层。会被其它组件遮住到后面看不见。*/
+  }
+  .content{
+    height: 300px;
+    overflow:hidden;/*溢出部份隐藏*/
   }
 </style>

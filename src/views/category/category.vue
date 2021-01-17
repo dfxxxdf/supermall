@@ -117,8 +117,17 @@
     },
     mounted(){
       console.log(document.querySelector('.wrapper'));
-      this.scroll = new BScroll(document.querySelector('.wrapper'),{
 
+      this.scroll = new BScroll(document.querySelector('.wrapper'),{
+        probeType: 2,//如果参数是2惯性滚动就不能被监听，如果是3就都可以被监听
+        pullUpLoad: true //上拉加载更多开启
+      })
+      //监听滚动条滚动到哪个位置
+      this.scroll.on('Scroll.vue',(position)=>{
+        console.log(position);
+      })
+      this.scroll.on('pullingUp', ()=>{
+        console.log('上拉加载更多');
       })
     }
   }
