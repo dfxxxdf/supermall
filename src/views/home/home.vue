@@ -11,7 +11,7 @@
 <!--    这里的的@tabClick是从E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\components\content\tabControl\TabControl.vue文件中的methods:里的this.$emit('tabClick', index)传过来的-->
     <tab-control class="tab-control" :titles="['流行', '新款', '精选']" @tabClick="tabClick"/>
 <!--    这里得到的数据是从E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\components\content\goods\GoodsList.vue中的props:里获取的-->
-    <good-list :goods="goods[currentType].list"/>
+    <good-list :goods="showGoods"/>
     <ul>
       <li>1</li>
       <li>1</li>
@@ -154,7 +154,13 @@
         currentType: 'pop'
       }
     },
-    //组件创建完成以后马上就要发生网络请求，所以这里要用到生命周期created()
+    computed: {
+      showGoods(){
+        return this.goods[this.currentType].list
+      }
+    },
+    //组件创建完
+    // 成以后马上就要发生网络请求，所以这里要用到生命周期created()
     created() {
       //1、请求多个数据
       this.getHomeMultidata()
