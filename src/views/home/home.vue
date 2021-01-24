@@ -3,8 +3,8 @@
 <!--    这里因为我们要为插槽插入东西，所以这里使用双标签-->
 <!--    在插槽里插入内容-->
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-
-    <scroll class="content">
+<!--    这里使用代码ref="scroll"就是为了拿到scroll组件就可以对BackTop.vue进行点击事件了-->
+    <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll">
       <!--    在这里使用HomeSwiper.vue,把得到服务器里的数据banners传进来-->
       <home-swiper :banners="banners"/>
       <!--    在这里使用RecommendView.vue,把得到服务器里的数据recommends传进来-->
@@ -15,6 +15,9 @@
       <!--    这里得到的数据是从E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\components\content\goods\GoodsList.vue中的props:里获取的-->
       <good-list :goods="showGoods"/>
     </scroll>
+<!--    这里对D:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\components\content\backTop\BackTop.vue组件的点击事件进行监听-->
+<!--    对组件的点击事件进行监听，这还是第1次，因为是对组件的监听，所以要添加.native-->
+    <back-top @click.native="backClick" v-show="isShowBackTop"/>
   </div>
 </template>
 
@@ -28,6 +31,7 @@
   import TabControl from 'components/content/tabControl/TabControl'
   import GoodList from 'components/content/goods/GoodsList'
   import Scroll from 'components/common/scroll/Scroll'
+  import BackTop from 'components/content/backTop/BackTop.vue'
 
   import { getHomeMultidata, getHomeGoods } from 'network/home'
   export default {
@@ -40,7 +44,8 @@
       NavBar,
       TabControl,
       GoodList,
-      Scroll
+      Scroll,
+      BackTop
     },
     data(){
       return {
@@ -54,7 +59,8 @@
           'new': {page: 0,list: []}, //新款数据
           'sell': {page: 0, list:[]} //精选款数据
         },
-        currentType: 'pop'
+        currentType: 'pop',
+        isShowBackTop: false //设置是否显示回到顶端的图标为不显示
       }
     },
     computed: {
@@ -90,8 +96,16 @@
             break
         }
       },
-
-
+      backClick(){
+        // console.log('对组件直接进行监听');
+        //  this.$refs.scroll.scroll.scrollTo(0, 0, 500)//点击BackTop组件让scroll回到顶部的代码
+        // this.$refs.scroll.message;
+        this.$refs.scroll.scrollTo(0, 0)
+      },
+      contentScroll(position){
+        // console.log(position);
+        this.isShowBackTop = (-position.y) > 1000
+      },
       /**
        * 以下是网络请求的方法
        */
@@ -159,9 +173,14 @@
     /*height: 300px;*/
     overflow:hidden;/*溢出部份隐藏*/
     position: absolute;
-    top: 44px;
-    bottom: 49px;
+    top: 44px;/*这里设置是的最上面标题的高度*/
+    bottom: 49px;/*这里设置的是最小面导航的高度*/
     left: 0;
     right: 0;
   }
+  /*.content {*/
+  /*   height: calc(100% - 50px);*/
+  /*   overflow: hidden;*/
+  /*   margin-top: 0px;*/
+  /* }*/
 </style>
