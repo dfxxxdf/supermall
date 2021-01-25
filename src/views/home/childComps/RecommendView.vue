@@ -32,7 +32,7 @@
     display: flex; /*这里是使用水平布局的意思*/
     width: 100%;
     text-align: center;
-    font-size: 18px;
+    font-size: 10px;
     padding: 15px 0 30px 0;
     border-bottom: 8px solid #eee; /*底部的粗线条*/
   }
@@ -41,8 +41,8 @@
   }
   .recommend-item img{
     /*设置图片的大小*/
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     margin-bottom: 5px;
   }
 </style>
