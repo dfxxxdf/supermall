@@ -3,7 +3,7 @@
 <!--  这里是一个一个小的商品的框架-->
 <!--  这里的数据是从GoodsList.vue文件中传过来的-->
 <!--  这里的信息可以去对照浏览器里的vue所拿到的数据看-->
-    <img :src="goodsItem.show.img" alt=""><!--拿到商品所对应的图片-->
+    <img :src="goodsItem.show.img" alt="" @load="imageLoad"><!--拿到商品所对应的图片-->
     <div class="goods-info">
       <p>{{goodsItem.title}}</p><!-- 拿到每个商品所对应的标题-->
       <span class="price">{{goodsItem.price}}</span> <!--拿到每个商品所对应的价格-->
@@ -21,6 +21,13 @@
         default(){
           return {}
         }
+      }
+    },
+    methods: {
+      imageLoad(){
+        // console.log('imageLoad');//每次图标加载出来这里都会被监听到
+        //这里$bus属性是不存在的，可以用console.log(this.$bus);看出来，所以我们要到main.js里添加代$bus
+        this.$bus.$emit('itemImageLoad') //发射总线(因为GoodsListItem.vue和home.vue离的太远，所以这里用这种方式发射总线，在home.vue组件中接收)
       }
     }
   }

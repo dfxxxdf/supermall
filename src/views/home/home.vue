@@ -4,7 +4,7 @@
 <!--    在插槽里插入内容-->
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
 <!--    这里使用代码ref="scroll"就是为了拿到scroll组件就可以对BackTop.vue进行点击事件了-->
-    <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll" :pull-up-load = "true" @pullingUp="loadMore">
+    <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll" :pull-up-load = "true" @pullingUp = "loadMore">
       <!--    在这里使用HomeSwiper.vue,把得到服务器里的数据banners传进来-->
       <home-swiper :banners="banners"/>
       <!--    在这里使用RecommendView.vue,把得到服务器里的数据recommends传进来-->
@@ -34,6 +34,7 @@
   import BackTop from 'components/content/backTop/BackTop.vue'
 
   import { getHomeMultidata, getHomeGoods } from 'network/home'
+  import {debounce} from 'common/utils'
   export default {
     name: "home",
     components: {
@@ -78,6 +79,17 @@
       this.getHomeGoods('new')
       this.getHomeGoods('sell')
     },
+    mounted(){
+      // 如果200毫秒还没有加载下一张图片，那么就刷新
+      const refresh = debounce(this.$refs.scroll.refresh, 50)
+      this.$bus.$on('itemImageLoad', ()=>{
+        // console.log('已接收到GoodsListItem.vue发送过来的总线');
+        // console.log(this.$refs.scroll.refresh);
+        // this.$refs.scroll.refresh()
+        // console.log('-----');
+        refresh()
+      })
+    },
     methods: {
       /**
        * 事件监听的相关方法
@@ -107,15 +119,8 @@
         this.isShowBackTop = (-position.y) > 1000
       },
       loadMore(){
-        console.log('上拉加载更多');
-         this.getHomeGoods(this.currentType)//看加载更多是在流行、新款、精选的哪个项目里面
-        /**
-         * 重点理解：这里为什么要使用这句代码进行分析
-         * 1、因为我们使用了第三方滚动组件better-scroll，它会自动计算所要滚动的高度，那么问题来了：在这个项目中我们所滚动的页面里包含了图片加载，图片加载是异步操作
-         * 也就是说当better-scroll计算出滚动高度的时候可能图片还没有加载出来，那么计算出来的高度是错误的。所以这里我们就要使用这句代码刷新一下界面。这样每次下拉加载
-         * 数据的时候就通过刷新刷出数据了。
-         */
-         this.$refs.scroll.scroll.refresh() //刷新滚动，让下拉添加数据能正常访问
+        // console.log('滚动到底部加载更多的方法');
+        this.getHomeGoods(this.currentType)
       },
       /**
        * 以下是网络请求的方法
@@ -153,10 +158,12 @@
           this.goods[type].list.push(...res.data.list) //这句代码就是把res数据塞到'pop': {page: 0, list: []}里面去
           // 现在pop类型已经多了一组数据了，所以这里的页码要加个1
           this.goods[type].page += 1
+          //完成上拉加载更多
           this.$refs.scroll.finishPullUp()
         });
       }
-    }
+    },
+
   }
 </script>
 <style scoped>

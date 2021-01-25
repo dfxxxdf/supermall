@@ -22,11 +22,15 @@
         type: Number,
          default: 0 //0代码不监听，3代表时实整个滚动页面监听
       },
-      // 是否监听下拉加载更多
-      pullUpLoad:{
+      pullUpLoad: {
         type: Boolean,
         default: false
       }
+      // 是否监听下拉加载更多
+      // pullUpLoad:{
+      //   type: Boolean,
+      //   default: false
+      // }
     },
     data(){
       return{
@@ -47,11 +51,30 @@
          // console.log(position); //打印位置信息
         this.$emit('scroll', position) //把监听到的位置信息传递出去
       })
-      //监听下拉事件
-      this.scroll.on('pullingUp',()=>{
-        // console.log('上拉加载更多');
-        this.$emit('pullingUp')// 把下拉加载更多的事件发送出去
-      })
+      /**
+       * 通过这句代码的打印可以看到决定滚动高度的属性
+       * scrollerHeight
+       */
+
+      //时实监听下拉事件滚动到哪个位置
+       if(this.probeType === 2 ||this.probeType === 3){
+         this.scroll.on('scroll',(position)=>{
+           this.$emit('scroll', position) //把滚动到哪个位置的监听信息发送粗去
+         })
+       }
+      /**
+       * 重点理解：这里为什么要使用这句代码进行分析
+       * 1、因为我们使用了第三方滚动组件better-scroll，它会自动计算所要滚动的高度，那么问题来了：在这个项目中我们所滚动的页面里包含了图片加载，图片加载是异步操作
+       * 也就是说当better-scroll计算出滚动高度的时候可能图片还没有加载出来，那么计算出来的高度是错误的。所以这里我们就要使用这句代码刷新一下界面。这样每次下拉加载
+       * 数据的时候就通过刷新刷出数据了。
+       */
+      //监听scroll滚动到底部的代码
+      if(this.pullUpLoad){
+        this.scroll.on('pullingUp', ()=>{
+          // console.log('监听到滚动到底部');
+          this.$emit('pullingUp')//把这里监听到的事件发送出去
+        })
+      }
     },
     methods: {
       scrollTo(x, y, time=300){
@@ -59,7 +82,20 @@
       },
       finishPullUp(){
         // this.scrolll.finishPullUp()
-        this.scroll.finishPullUp()
+        this.scroll && this.scroll.finishPullUp()
+      },
+      refresh(){
+        //如果this.scroll有值在进行刷新
+        // this.scroll.refresh()
+        /**
+         * 我们发现一个问题：在home.vue的mounted()打印this.$refs.scroll.refresh()的时候会报错。原因是在Scroll.vue组件中的methods:方法中的refresh()方法在GoodsListItem里刷出图片太快
+         * 而Scroll还没有挂载进来，所以在Scroll.vue的methods:方法里的refresh()方法里我们用代码：this.scroll && this.scroll.refresh()
+         */
+        // console.log('看加载图片刷新了多少次');
+        this.scroll && this.scroll.refresh()
+      },
+      finishPullUp(){
+        this.scroll && this.scroll.finishPullUp()
       }
     }
   }
