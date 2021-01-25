@@ -41,8 +41,8 @@
   }
   .recommend-item img{
     /*设置图片的大小*/
-    width: 130px;
-    height: 130px;
+    width: 80px;
+    height: 80px;
     margin-bottom: 5px;
   }
 </style>
