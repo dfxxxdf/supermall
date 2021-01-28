@@ -3,15 +3,16 @@
 <!--    这里因为我们要为插槽插入东西，所以这里使用双标签-->
 <!--    在插槽里插入内容-->
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
+    <tab-control :titles="['流行', '新款', '精选']" @tabClick="tabClick" ref="tabControl1" class="tab-control" v-show="isTabFixed"/>
 <!--    这里使用代码ref="scroll"就是为了拿到scroll组件就可以对BackTop.vue进行点击事件了-->
     <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll" :pull-up-load = "true" @pullingUp = "loadMore">
       <!--    在这里使用HomeSwiper.vue,把得到服务器里的数据banners传进来-->
-      <home-swiper :banners="banners"/>
+      <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad"/>
       <!--    在这里使用RecommendView.vue,把得到服务器里的数据recommends传进来-->
       <recommend-view :recommends = "recommends"/>
       <feature-view/>
       <!--    这里的的@tabClick是从E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\components\content\tabControl\TabControl.vue文件中的methods:里的this.$emit('tabClick', index)传过来的-->
-      <tab-control class="tab-control" :titles="['流行', '新款', '精选']" @tabClick="tabClick"/>
+      <tab-control :titles="['流行', '新款', '精选']" @tabClick="tabClick" ref="tabControl2"/>
       <!--    这里得到的数据是从E:\phpstudy_pro\WWW\Vuejs\webpack\supermall\src\components\content\goods\GoodsList.vue中的props:里获取的-->
       <good-list :goods="showGoods"/>
     </scroll>
@@ -61,13 +62,35 @@
           'sell': {page: 0, list:[]} //精选款数据
         },
         currentType: 'pop',
-        isShowBackTop: false //设置是否显示回到顶端的图标为不显示
+        isShowBackTop: false, //设置是否显示回到顶端的图标为不显示
+        tabOffsetTop: 0,
+        isTabFixed: false,
+        saveY: 0
       }
     },
     computed: {
       showGoods(){
         return this.goods[this.currentType].list
       }
+    },
+    // 被销毁调用的方法
+    destroyed(){
+      // console.log('看看首页销毁有没有被调用');
+    },
+    // 激活的
+    activated(){
+      // console.log('激活方法activated()已生效');
+      // 参数1：x轴不需要滚动；参数2：y轴滚动量；参数3：回到原位的时间为0
+      this.$refs.scroll.scrollTo(0, this.saveY,0)
+      //最后记得进行一次刷新
+      this.$refs.scroll.refresh()
+    },
+    //去激活的
+    deactivated(){
+      // this.saveY = this.$refs.scroll.scroll.y
+      // 以上的代码太长，我们进行一下包装
+      this.saveY = this.$refs.scroll.getScrollY()
+      console.log('激活方法activated()已失效');
     },
     //组件创建完
     // 成以后马上就要发生网络请求，所以这里要用到生命周期created()
@@ -89,13 +112,17 @@
         // console.log('-----');
         refresh()
       })
+      //2、获取tabControl的offsetTop
+      /**
+       * 这里拿到的高度不一定是对的，因为还有一种可能就是图标还没有加载完，特别是轮播图片，这样我们拿到的高度就是错误的
+       */
+      // console.log(this.$refs.tabControl.$el.offsetTop);
     },
     methods: {
       /**
        * 事件监听的相关方法
        */
       tabClick(index){
-        // console.log(index);
         switch (index) {
           case 0:
             this.currentType = 'pop'
@@ -107,6 +134,8 @@
             this.currentType = 'sell'
             break
         }
+        this.$refs.tabControl1.currentIndex = index;
+        this.$refs.tabControl2.currentIndex = index;
       },
       backClick(){
         // console.log('对组件直接进行监听');
@@ -116,11 +145,23 @@
       },
       contentScroll(position){
         // console.log(position);
+        //1、判断BackTop是否显示
         this.isShowBackTop = (-position.y) > 1000
+        //2、决定tabControl是否吸顶
+        this.isTabFixed = (-position.y) > this.tabOffsetTop
       },
       loadMore(){
         // console.log('滚动到底部加载更多的方法');
         this.getHomeGoods(this.currentType)
+      },
+      swiperImageLoad(){
+        //2、获取tabControl的offsetTop
+        /**
+         * 这里拿到的就是正确的高度的
+         * 说明，我们的console可以看出这里总的监听了4次，我们不需要监听这么多，只要监听一次就可以了
+         */
+        // console.log(this.$refs.tabControl.$el.offsetTop);
+        this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
       },
       /**
        * 以下是网络请求的方法
@@ -163,12 +204,11 @@
         });
       }
     },
-
   }
 </script>
 <style scoped>
   #home{
-    padding-top: 44px;
+    /*padding-top: 44px;*/
     /*但是当元素没有内容时候,height:100%，该元素不会被撑开，此时高度为0，但是设置height:100vh，该元素会被撑开屏幕高度一致*/
     height: 100vh;
     /*这里因为home的高度被撑开了，我们会发现有6000多的高，所以这里我们给home设置一个固定高度*/
@@ -177,15 +217,11 @@
   .home-nav {
     background-color: var(--color-tint);
     color: #fff;
-    position: fixed;
-    left: 0; right: 0;
-    top: 0;
-    z-index: 9;/*如果没有这句代码，.home-nav(购物街的代码不会在最上层)*/
-  }
-  .tab-control{
-    position: sticky;
-    top:44px;
-    z-index: 9;/*如果没有这句代码.tab-control不会在最上层。会被其它组件遮住到后面看不见。*/
+    /*position: fixed;*/
+    /*left: 0;*/
+    /*right: 0;*/
+    /*top: 0;*/
+    /*z-index: 9;!*如果没有这句代码，.home-nav(购物街的代码不会在最上层)*!*/
   }
   .content{
     /*不同电脑或手机的高度是不一样的。所以这里不能写死*/
@@ -196,6 +232,11 @@
     bottom: 49px;/*这里设置的是最小面导航的高度*/
     left: 0;
     right: 0;
+  }
+  /*可以把tab-control组件从下方放到上方*/
+  .tab-control{
+    position: relative;
+    z-index: 9;
   }
   /*.content {*/
   /*   height: calc(100% - 50px);*/

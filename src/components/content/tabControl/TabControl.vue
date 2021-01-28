@@ -35,9 +35,9 @@
   .tab-control{
     display: flex; /*收缩到一排上*/
     text-align: center;/*文字居中*/
-    font-size: 24px; /*文字的大小*/
-    height: 40px; /*有文字撑起的高度*/
-    line-height: 40px; /*没有文字也可以撑起的高度*/
+    font-size: 15px; /*文字的大小*/
+    height: 44px; /*有文字撑起的高度*/
+    line-height: 44px; /*没有文字也可以撑起的高度*/
     background-color: #fff;
   }
   .tab-control-item{

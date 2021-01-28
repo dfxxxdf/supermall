@@ -4,7 +4,7 @@
       <!--        这里插槽插入的内容进行轮播-->
       <!--        这里都是绑定，所以都要加：-->
       <a :href="item.link">
-        <img :src="item.image" alt="">
+        <img :src="item.image" alt="" @load="imageLoad">
       </a>
     </swiper-item>
   </swiper>
@@ -27,9 +27,24 @@
         }
       }
     },
+    data(){
+      return {
+        isLoad: false
+      }
+    },
     components: {
       Swiper,
       SwiperItem
+    },
+    methods: {
+      imageLoad(){
+        //有4张轮播图，所以打印了4次
+        // console.log('图片加载完成');
+        if(!this.isLoad){
+          this.$emit('swiperImageLoad')
+          this.isLoad = true
+        }
+      }
     }
   }
 </script>

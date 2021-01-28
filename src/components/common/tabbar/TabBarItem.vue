@@ -44,7 +44,7 @@
     },
     methods: {
       itemClick(){
-        console.log('查看监听是否成功~~！')//测试监听是否成功
+        // console.log('查看监听是否成功~~！')//测试监听是否成功
         this.$router.replace(this.path)
       }
     }
